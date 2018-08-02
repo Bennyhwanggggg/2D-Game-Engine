@@ -99,7 +99,13 @@ public class PolygonalSceneObject extends SceneObject {
     @Override
     public void drawSelf(GL3 gl, CoordFrame2D frame) {
 
+    	Color colorToFill = getFillColor();
         // TODO: Write this method
+    	if (colorToFill != null) {
+    		// use shader to set color?
+//    		gl.glClearColor(gl, colorToFill.getRed()/255f, colorToFill.getGreen()/255f, colorToFill.getBlue()/255f);
+    		myPolygon.draw(gl, frame);
+    	}
 
     }
 
