@@ -25,6 +25,7 @@ import unsw.graphics.geometry.Polygon2D;
  */
 public class CircularSceneObject extends PolygonalSceneObject {
 	
+	private static final int POINTS = 32;
 	private float myRadius;
 	private Point2D myCentre;
     private Color myFillColor;
@@ -33,7 +34,7 @@ public class CircularSceneObject extends PolygonalSceneObject {
 
 	//Create a CircularSceneObject with centre 0,0 and radius 1
 	public CircularSceneObject(SceneObject parent, Color fillColor, Color lineColor) {
-		super(parent, new Polygon2D(), fillColor, lineColor); //
+		super(parent, new Polygon2D(getCirclePoints(new Point2D(0, 0), 1)), fillColor, lineColor); //
 		myRadius = 1;
 		myCentre = new Point2D(0, 0);
 		myFillColor = fillColor;
@@ -42,7 +43,7 @@ public class CircularSceneObject extends PolygonalSceneObject {
 
 	//Create a CircularSceneObject with centre 0,0 and a given radius
 	public CircularSceneObject(SceneObject parent, float radius, Color fillColor, Color lineColor) {
-		super(parent, new Polygon2D(), fillColor, lineColor);
+		super(parent, new Polygon2D(getCirclePoints(new Point2D(0, 0), radius)), fillColor, lineColor);
 		myRadius = radius;
 		myCentre = new Point2D(0, 0);
 		myFillColor = fillColor;
@@ -134,7 +135,7 @@ public class CircularSceneObject extends PolygonalSceneObject {
 	 */
 	@Override
 	public void drawSelf(GL3 gl, CoordFrame2D frame) {
-		Polygon2D myCircle = new Polygon2D(getCirclePoints());
+		Polygon2D myCircle = new Polygon2D(getCirclePoints(getCentre(), getRadius()));
 		Color colorToFill = getFillColor();
     	if (colorToFill != null) {
     		// use shader to set color
@@ -157,14 +158,11 @@ public class CircularSceneObject extends PolygonalSceneObject {
 	 * @param radius
 	 * @return
 	 */
-	private List<Point2D> getCirclePoints(){
-		int nPoints = 32;
+	private static List<Point2D> getCirclePoints(Point2D centre, double radius){
 		double currentAngle = 0; // in radians
-		double radius = getRadius();
-		Point2D centre = getCentre();
-		double angleInterval = (2*Math.PI)/nPoints;
+		double angleInterval = (2*Math.PI)/POINTS;
 		List<Point2D> circlePoints = new ArrayList<>();
-		for (int i=0; i<nPoints; i++) {
+		for (int i=0; i<POINTS; i++) {
 			float x = centre.getX() + (float) (radius * Math.cos(currentAngle));
 			float y = centre.getY() + (float) (radius * Math.sin(currentAngle));
 			circlePoints.add(new Point2D(x, y));

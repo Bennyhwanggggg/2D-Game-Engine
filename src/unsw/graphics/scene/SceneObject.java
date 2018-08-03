@@ -385,7 +385,7 @@ public class SceneObject {
         while (parent != null) {
         	translationMatrix = Matrix3.translation(-parent.getPosition().getX(), -parent.getPosition().getY());
         	rotationMatrix = Matrix3.rotation(-parent.getRotation());
-        	scaleMatrix = Matrix3.scale(1/parent.getScale(), 1/parent.getScale());
+        	scaleMatrix = Matrix3.scale(1f/parent.getScale(), 1f/parent.getScale());
         	transformationMatrix = scaleMatrix.multiply(rotationMatrix).multiply(translationMatrix).multiply(transformationMatrix);
         	parent = parent.getParent();
         }
