@@ -307,11 +307,10 @@ public class SceneObject {
     		translationMatrix = Matrix3.translation(currentObject.getPosition());
     		rotationMatrix = Matrix3.rotation(currentObject.getRotation());
     		scaleMatrix = Matrix3.scale(currentObject.getScale(), currentObject.getScale());
-    		transformationMatrix = scaleMatrix.multiply(translationMatrix.multiply(rotationMatrix));
+    		transformationMatrix = translationMatrix.multiply(rotationMatrix).multiply(scaleMatrix);
     		currentVector = transformationMatrix.multiply(currentVector);
     		currentObject = currentObject.getParent();
     	}
-    	
         return currentVector.asPoint2D();
     }
 
@@ -382,13 +381,12 @@ public class SceneObject {
         
         // Convert the preserved to global to the new local using the transformation matrix from the new parents
         // We need to compute the inverse transformation matrix
-        Matrix3 translationMatrix, rotationMatrix, scaleMatrix, currentMatrix, transformationMatrix = Matrix3.identity();
+        Matrix3 translationMatrix, rotationMatrix, scaleMatrix, transformationMatrix = Matrix3.identity();
         while (parent != null) {
         	translationMatrix = Matrix3.translation(-parent.getPosition().getX(), -parent.getPosition().getY());
         	rotationMatrix = Matrix3.rotation(-parent.getRotation());
         	scaleMatrix = Matrix3.scale(1/parent.getScale(), 1/parent.getScale());
-        	currentMatrix = translationMatrix.multiply(scaleMatrix.multiply(rotationMatrix));
-        	transformationMatrix = transformationMatrix.multiply(currentMatrix);
+        	transformationMatrix = scaleMatrix.multiply(rotationMatrix).multiply(translationMatrix).multiply(transformationMatrix);
         	parent = parent.getParent();
         }
         
@@ -401,10 +399,10 @@ public class SceneObject {
         setPosition(localVector.asPoint2D());
         
         // Compute the local rotation which is global - parent
-        setRotation(globalRotation-parent.getGlobalRotation());
+        setRotation(globalRotation-myParent.getGlobalRotation());
         
         // Set new scale which is the global scale we computed divided by parent scale
-        setScale(globalScale/parent.getGlobalScale());
+        setScale(globalScale/myParent.getGlobalScale());
     }
     
 
