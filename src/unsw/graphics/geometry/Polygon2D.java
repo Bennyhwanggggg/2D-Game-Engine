@@ -87,6 +87,10 @@ public class Polygon2D {
         gl.glDeleteBuffers(1, names, 0);
     }
     
+    public List<Point2D> getPoints(){
+    	return this.points;
+    }
+    
     /**
      * Draw the polygon on the canvas.
      * @param gl

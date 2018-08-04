@@ -1,11 +1,16 @@
 package unsw.graphics.scene;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.jogamp.opengl.GL3;
 
 import unsw.graphics.CoordFrame2D;
+import unsw.graphics.Matrix3;
 import unsw.graphics.Shader;
+import unsw.graphics.Vector3;
+import unsw.graphics.geometry.Point2D;
 import unsw.graphics.geometry.Polygon2D;
 
 /**
@@ -116,5 +121,50 @@ public class PolygonalSceneObject extends SceneObject {
     	}
 
     }
+
+    /**
+	 * Collision detection for line
+	 * 
+	 * @param Point2D p
+	 * @return true if a point lie on the line
+	 */
+	@Override
+	public boolean collision(Point2D p) {
+		// Use ray cast algorithm to detect if a point is inside a polygon. If a ray 
+		// cross edges odd number of times, it indicate the point is inside the polygon.
+		List<Point2D> polygonPoints = new ArrayList<Point2D>(this.myPolygon.getPoints());
+		
+		// Since there can be a large number of points, its more appropriate to do this in local coordinate system.
+		// compute the inverse model view matrix
+		SceneObject currentObj = this;
+		Matrix3 translationMatrix, rotationMatrix, scaleMatrix, transformationMatrix = Matrix3.identity();
+		translationMatrix = Matrix3.translation(-currentObj.getGlobalPosition().getX(), -currentObj.getGlobalPosition().getY());
+    	rotationMatrix = Matrix3.rotation(-currentObj.getGlobalRotation());
+    	scaleMatrix = Matrix3.scale(1f/currentObj.getGlobalScale(), 1f/currentObj.getGlobalScale());
+    	transformationMatrix = scaleMatrix.multiply(rotationMatrix).multiply(translationMatrix).multiply(transformationMatrix);
+        
+
+        // To find the new local vector, we can now use the transformation matrix multiplied by the global vector 
+        // Local = M^-1 * Global
+        Vector3 globalVector = new Vector3(p.getX(), p.getY(), 1);
+        p = transformationMatrix.multiply(globalVector).asPoint2D();
+
+        // Adapted the solution provided in https://stackoverflow.com/questions/8721406/how-to-determine-if-a-point-is-inside-a-2d-convex-polygon
+        // to determine if the point is inside polygon. 
+        boolean collided = false;
+        int nPoints = polygonPoints.size();
+        int i, j;
+        for (i=0, j=nPoints-1; i<nPoints; j=i++) {
+        	if ((polygonPoints.get(i).getY() >= p.getY()) != (polygonPoints.get(j).getY() >= p.getY()) &&
+        			(p.getX() <= ((polygonPoints.get(j).getX() - polygonPoints.get(i).getX()) 
+        			* (p.getY() - polygonPoints.get(i).getY()))/(polygonPoints.get(j).getY()-polygonPoints.get(i).getY())
+        			+ polygonPoints.get(i).getX())) {
+        		collided = !collided;
+        	}
+        }
+        
+		return collided;
+	}
+    
 
 }

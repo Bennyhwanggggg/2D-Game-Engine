@@ -21,9 +21,13 @@ import unsw.graphics.geometry.Point2D;
  *
  * @author malcolmr
  * @author Robert Clifton-Everest
+ * @author Benny Hwang
  */
 public class SceneObject {
     
+	// List of all objects in Scene tree so we can use it for detection collision
+	public final static List<SceneObject> ALL_SCENE_OBJECTS = new ArrayList<SceneObject>();
+	
     // the links in the scene tree
     private SceneObject myParent;
     private List<SceneObject> myChildren;
@@ -48,6 +52,9 @@ public class SceneObject {
         myTranslation = new Point2D(0,0);
 
         amShowing = true;
+        
+        // Add the item to all object list
+        ALL_SCENE_OBJECTS.add(this);
     }
 
     /**
@@ -69,6 +76,9 @@ public class SceneObject {
 
         // initially showing
         amShowing = true;
+        
+        // Add the item to all object list
+        ALL_SCENE_OBJECTS.add(this);
     }
 
     /**
@@ -79,8 +89,11 @@ public class SceneObject {
         for (SceneObject child : childrenList) {
             child.destroy();
         }
-        if(myParent != null)
+        if(myParent != null) {
                 myParent.myChildren.remove(this);
+        }
+        
+        ALL_SCENE_OBJECTS.remove(this);
     }
 
     /**
@@ -405,5 +418,16 @@ public class SceneObject {
         setScale(globalScale/myParent.getGlobalScale());
     }
     
+    /**
+     * Collision detection
+     * 
+     * This does nothing in the base SceneObject class. Override this in subclasses.
+     * 
+     * @param Point2D
+     * @return true if point is inside the object
+     */
+    public boolean collision(Point2D p) {
+    	return true; // return false by default
+    }
 
 }

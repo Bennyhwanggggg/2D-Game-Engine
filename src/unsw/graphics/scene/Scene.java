@@ -1,8 +1,12 @@
 package unsw.graphics.scene;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.jogamp.opengl.GL3;
 
 import unsw.graphics.CoordFrame2D;
+import unsw.graphics.geometry.Point2D;
 
 
 /**
@@ -75,4 +79,20 @@ public class Scene {
         this.myCamera = camera;
     }
     
+    /**
+     * 
+     * @param p a point in world coordinates
+     * @return list of any object in scene-tree that contains that point
+     * 
+     */
+    public List<SceneObject> collision(Point2D p) {
+    	List<SceneObject> allObj = new ArrayList<SceneObject>(SceneObject.ALL_SCENE_OBJECTS);
+    	List<SceneObject> collidedObj = new ArrayList<SceneObject>();
+    	for (SceneObject obj: allObj) {
+    		if (obj.collision(p)) {
+    			collidedObj.add(obj);
+    		}
+    	}
+    	return collidedObj;
+    }
 }

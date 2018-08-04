@@ -2,12 +2,13 @@ package unsw.graphics.scene;
 
 import java.awt.Color;
 
-import unsw.graphics.geometry.Line2D;
 import unsw.graphics.geometry.Polygon2D;
 
 /**
- * A scene object that is a dog
+ * A scene object that is a dog/hippo
  *
+ * #########NOTE#########
+ * Use non black background as the object itself is black
  */
 public class MyCoolSceneObject extends SceneObject {
 	
@@ -82,6 +83,7 @@ public class MyCoolSceneObject extends SceneObject {
         leftEar.translate(0,  0.25f);
         rightEar = new PolygonalSceneObject(head, ear, black, black);
         rightEar.translate(0.1f, 0.25f);
+        
     }
 
 }

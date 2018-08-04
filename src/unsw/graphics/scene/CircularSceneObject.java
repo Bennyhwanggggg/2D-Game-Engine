@@ -171,7 +171,17 @@ public class CircularSceneObject extends PolygonalSceneObject {
 		return circlePoints;
 	}
 	
-	
-	
+	/**
+	 * Collision detection for Circles
+	 * 
+	 * @param point in world coordinate
+	 * @return true if point inside circle
+	 */
+	@Override
+	public boolean collision(Point2D p) {
+		// Get the objects world coordinate and see if p is inside it
+		Point2D globalCenter = this.getGlobalPosition();
+		return (this.getRadius()*this.getGlobalScale()) >= Math.hypot(p.getX()-globalCenter.getX(), p.getY()-globalCenter.getY());
+	}
 	
 }
