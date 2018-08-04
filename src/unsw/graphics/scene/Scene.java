@@ -19,6 +19,7 @@ import unsw.graphics.geometry.Point2D;
  *
  * @author malcolmr
  * @author Robert Clifton-Everest
+ * @author Benny Hwang
  * 
  */
 public class Scene {
@@ -90,6 +91,7 @@ public class Scene {
     	List<SceneObject> collidedObj = new ArrayList<SceneObject>();
     	for (SceneObject obj: allObj) {
     		if (obj.collision(p)) {
+    			System.out.println("colided");
     			collidedObj.add(obj);
     		}
     	}

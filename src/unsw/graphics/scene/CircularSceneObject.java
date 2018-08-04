@@ -30,7 +30,6 @@ public class CircularSceneObject extends PolygonalSceneObject {
 	private Point2D myCentre;
     private Color myFillColor;
     private Color myLineColor;
-//    private Polygon2D myCircle;
 
 	//Create a CircularSceneObject with centre 0,0 and radius 1
 	public CircularSceneObject(SceneObject parent, Color fillColor, Color lineColor) {

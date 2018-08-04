@@ -2,6 +2,7 @@ package unsw.graphics.scene.tests;
 
 
 import java.awt.Color;
+import java.util.List;
 
 import com.jogamp.opengl.GL3;
 
@@ -10,6 +11,7 @@ import unsw.graphics.geometry.Point2D;
 import unsw.graphics.scene.Camera;
 import unsw.graphics.scene.MyCoolSceneObject;
 import unsw.graphics.scene.Scene;
+import unsw.graphics.scene.SceneObject;
 
 /**
  * A simple class to view MyCoolSceneObject
@@ -51,12 +53,11 @@ public class TestMyCoolSceneObject extends Application2D {
 		cso.translate(-0.2f,0.2f);
 		cso.rotate(45);
 		cso.scale(0.25f);
-//		scene.collision(new Point2D(-0.425f,-0.2f)); //0.4875f,0.0f, 0.6f,0.0375f
-//		System.out.println("---------------");
-//		scene.collision(new Point2D(-0.225f,-0.2f));
-//		System.out.println("---------------");
-//		scene.collision(new Point2D(0.225f,-0.185f));
-		
+		cso.rotate(-65);
+		cso.scale(1.24f);
+		cso.translate(0.6f, 0.4f);
+		cso.translate(-0.3f, -0.1f);
+		cso.scale(1.1f);
 	}
    
     /**

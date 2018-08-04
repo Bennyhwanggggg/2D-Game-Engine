@@ -9,6 +9,8 @@ import unsw.graphics.geometry.Polygon2D;
  *
  * #########NOTE#########
  * Use non black background as the object itself is black
+ * 
+ * @author Benny Hwang
  */
 public class MyCoolSceneObject extends SceneObject {
 	

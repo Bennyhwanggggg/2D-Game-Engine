@@ -22,6 +22,7 @@ import unsw.graphics.geometry.Point2D;
  * @author malcolmr
  * @author Robert Clifton-Everest
  * @author Benny Hwang
+ * 
  */
 public class SceneObject {
     
@@ -395,13 +396,10 @@ public class SceneObject {
         // Convert the preserved to global to the new local using the transformation matrix from the new parents
         // We need to compute the inverse transformation matrix
         Matrix3 translationMatrix, rotationMatrix, scaleMatrix, transformationMatrix = Matrix3.identity();
-        while (parent != null) {
-        	translationMatrix = Matrix3.translation(-parent.getPosition().getX(), -parent.getPosition().getY());
-        	rotationMatrix = Matrix3.rotation(-parent.getRotation());
-        	scaleMatrix = Matrix3.scale(1f/parent.getScale(), 1f/parent.getScale());
-        	transformationMatrix = scaleMatrix.multiply(rotationMatrix).multiply(translationMatrix).multiply(transformationMatrix);
-        	parent = parent.getParent();
-        }
+        translationMatrix = Matrix3.translation(-parent.getGlobalPosition().getX(), -parent.getGlobalPosition().getY());
+    	rotationMatrix = Matrix3.rotation(-parent.getGlobalRotation());
+    	scaleMatrix = Matrix3.scale(1f/parent.getGlobalScale(), 1f/parent.getGlobalScale());
+    	transformationMatrix = scaleMatrix.multiply(rotationMatrix).multiply(translationMatrix).multiply(transformationMatrix);
         
         // To find the new local vector, we can now use the transformation matrix multiplied by the global vector 
         // Local = M^-1 * Global
@@ -427,7 +425,7 @@ public class SceneObject {
      * @return true if point is inside the object
      */
     public boolean collision(Point2D p) {
-    	return true; // return false by default
+    	return false; // return false by default
     }
 
 }
